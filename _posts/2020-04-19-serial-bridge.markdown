@@ -14,16 +14,16 @@ I do have a phone running kali nethunter that runs a custom kernel that supports
 
 # Prototyping
 To make this work I connected two Attiny85 with some resistors and a wire and taped it to an old gift card. \
-![image could not be loaded](/assets/step0.jpg){: style="padding:16px"}    
+![image could not be loaded](/assets/step0.jpg){: style="padding-top:16px; padding-bottom:16px"}    
 This worked fine for testing the code, and learning that you can't use pin5 as input  on this board because it is connected to reset.
 However it looked terrible so I rewired it and taped it to a smaller piece of plastic. \
-![image could not be loaded](/assets/step1.jpg){: style="padding:16px"}    
+![image could not be loaded](/assets/step1.jpg){: style="padding-top:16px; padding-bottom:16px"}    
 
 # The result
 To make the device smaller, I soldered two boards together using the power pin header.
 This connects the grounds which gets rid of the wire but also connects the vin and 5v of the two boards together. To prevent a short circuit I cut the traces going to the 5v pins.
 The power led is tied to the 5v pin so you can use this to check if the connection is cut.  
-![image could not be loaded](/assets/step2.jpg){: style="padding:16px"}    
+![image could not be loaded](/assets/step2.jpg){: style="padding-top:16px; padding-bottom:16px"}    
 I also edited a USB serial app to streamline the experience(it opens automatically when it recognizes the PID of the cable), but the device should work fine with any USB serial app.
 
 # Code

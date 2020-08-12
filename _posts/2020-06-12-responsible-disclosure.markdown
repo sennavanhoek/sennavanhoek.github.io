@@ -119,7 +119,7 @@ Connection: close
 }
 ```
 I could also successfully log into the app!  
-![image could not be loaded](/assets/appwash_screenshot.png){: style="padding:16px"}
+![image could not be loaded](/assets/appwash_screenshot.png){: style="padding-top:16px; padding-bottom:16px"}
 
 # Expected Result  
 A server response like the one when you enter a wrong validation code, or another error.
