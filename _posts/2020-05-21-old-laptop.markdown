@@ -70,7 +70,7 @@ ssh -L 5901:localhost:5901 kali@192.168.42.129 -p8023
 #start x
 xinit
 {% endhighlight %}
-  And with that we can now use xfce4 on the laptop!
+  And with that we can now use xfce4 on the laptop!  
 ![image could not be loaded](/assets/c600_kali.jpg){: style="padding-top:16px; padding-bottom:16px"}  
 I promised a modern IDE, fortunately java works great on arm so PyCharm and InteliJ work fine!
 ![image could not be loaded](/assets/c600_pycharm.jpg){: style="padding-top:16px; padding-bottom:16px"}  
