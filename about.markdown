@@ -12,7 +12,7 @@ permalink: /about/
 </style>
 ![Senna van Hoek](/assets/glitch.gif){: .image-left }
 # ~$ whoami
-I'm a Dutch bio-informatics student and at the moment I work with selective sequencing.
-In my spare time I mostly work on small electronics projects like you will find on this blog, but I also like to participate in CTF.
+I'm a Dutch bio-informatics student and at the moment I work with adaptive sequencing.
+In my spare time I mostly work on small electronics and software projects like you will find on this blog, but I also like to participate in CTF.
 
 \- Senna van Hoek
