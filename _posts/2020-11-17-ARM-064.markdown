@@ -1,0 +1,87 @@
+---
+layout: post
+title:  "TIS-100 with real assembly"
+categories: assembly AArch64
+permalink: "/assembly-game/"
+---
+Playing TIS-100 levels with 64-bit ARM assembly.  
+
+# Background
+In TIS-100 you solve programming challenges using simple assembly instructions. By solving challenges you gradually unlock more levels and learn more about the story.
+It’s a cool game and I wanted to know what the levels would be like with real assembly.
+
+The simplest way I could think of was to write some of the levels in C and call a function written in assembly containing the solution code.
+For the architecture I chose 64-bit arm (AArch64), it’s instruction set is called A64. This also means that I need to run the program’s in qemu because I don’t have an arm based laptop.
+
+Arm is a reduced instruction set computer (RISC) architecture so it has a smaller instruction set than intel X86  for example, but compared to the 14 instructions used in TIS-100, it’s still very large.
+
+So what does it look like?  
+![image could not be loaded](/assets/arm-064.png)
+On the right you can see the assembly code, after “asm_code:” the actual instructions start. On the left you can see the output of the c program, containing the TIS-100 challenge, the input, expected output and output of the assembly function. The first column in the OUT table is the expected output.
+
+
+Here is the same level in TIS-100:
+![image could not be loaded](/assets/tis-100.png){: style="padding:16px"}  
+
+It’s interesting that even for this simple program you need way more instructions in TIS than you need with A64.
+
+# A primer on A64 assembly:
+
+There are 31 general purpose registers, X0 to X30, some have special functions but you can do whatever you want with X0 to X8.
+
+Some simple A64 instructions:
+
+{% highlight %}  
+MOV X0, X1      \\ X0 = X1;  
+SUB X0, X1, X2  \\ X0 = X1 - X2;  
+ADD X1, X0, X3  \\ X1 = X0 + X3;  
+MUL X2, X1, X0  \\ X2 = X1 * X0;  
+{% endhighlight %}
+
+
+When you call a function written in A64 assembly the arguments are directly passed to the registers, the return value is the value contained in X0 when the RET instruction is executed.
+This means that X0 is set to the value of the first argument, X1 to the second argument, X2 to the third, etcetera.
+
+To write a function that multiplies its argument by 5 we need the following instructions:
+
+{% highlight %}  
+MOV X1, #5     \\ X1 = 5;  
+MUL X0, X0, X1 \\ X0 = X0 * X1;  
+RET            \\ return X0;  
+{% endhighlight %}
+
+We also need to tell the assembler where the code starts:
+
+{% highlight %}  
+.global asm_code  
+asm_code:  
+    MOV X1, #5  
+    MUL X0, X0, X1  
+    RET  
+{% endhighlight %}
+
+This is the minimal amount of information we need to give to the assembler to make it work.
+
+To go over the code in the screenshot:  
+{% highlight %}  
+SUB X3, X1, X2   \\ X3 = X1 - X2;  
+SUB X4, X2, X1   \\ X4 = X2 - X1;  
+STP X3, X4, [X0] \\ X0[0] = X3; X0[1] = X4;  
+RET              \\ return X0;  
+{% endhighlight %}
+
+STP stands for store pair, it stores the value of two registers to memory. X0 contains the pointer to an array.
+
+# Conclusion:
+
+I solved 10 of the early TIS-100 levels using A64 and it was a lot of fun. After those levels it became apparent that the challenges don’t always translate well and I decided to write challenges specifically to learn AArch64 assembly. (More on that in the future)
+
+Do I think TIS-100 would be a better game if it used real assembly?  
+No, the small instruction set and node-based architecture make it quite the unique puzzle game. Something interesting for new and seasoned programmers alike.
+
+A benefit of using arm assembly, the levels will run just fine in termux on most modern android tablets and phones.
+![image could not be loaded](/assets/arm-064-tab.jpeg){: style="padding:16px"}
+
+I have posted the levels and solutions to [github](https://github.com/sennavanhoek/ARM-064), along with the commands I used to run them.
+
+For the sake of simplicity I skipped over details, if you are interested in learning more about the 64-bit arm instruction set, the [ISA introduction](https://developer.arm.com/architectures/learn-the-architecture/aarch64-instruction-set-architecture) is a good place to start.
