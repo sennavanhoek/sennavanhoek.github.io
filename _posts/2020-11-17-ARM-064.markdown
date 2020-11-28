@@ -4,7 +4,7 @@ title:  "TIS-100 with real assembly"
 categories: assembly AArch64
 permalink: "/assembly-game/"
 ---
-Playing TIS-100 levels with 64-bit ARM assembly.  
+Can you learn 64-bit ARM assembly by playing TIS-100 levels?
 
 # Background
 In TIS-100 you solve programming challenges using simple assembly instructions. By solving challenges you gradually unlock more levels and learn more about the story.
