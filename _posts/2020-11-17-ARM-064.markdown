@@ -29,12 +29,12 @@ There are 31 general purpose registers, X0 to X30, some have special functions b
 
 Some simple A64 instructions:
 
-{% highlight C %}
-MOV X0, X1      | X0 = X1;  
-SUB X0, X1, X2  | X0 = X1 - X2;  
-ADD X1, X0, X3  | X1 = X0 + X3;  
-MUL X2, X1, X0  | X2 = X1 * X0;  
-{% endhighlight %}
+```
+MOV X0, X1      \\ X0 = X1;  
+SUB X0, X1, X2  \\ X0 = X1 - X2;  
+ADD X1, X0, X3  \\ X1 = X0 + X3;  
+MUL X2, X1, X0  \\ X2 = X1 * X0;  
+```
 
 
 When you call a function written in A64 assembly the arguments are directly passed to the registers.The return value is the value contained in X0 when the RET instruction is executed.
@@ -42,31 +42,31 @@ This means that X0 is set to the value of the first argument, X1 to the second a
 
 To write a function that multiplies its argument by 5 we need the following instructions:
 
-{% highlight C %}
-MOV X1, #5     | X1 = 5;  
-MUL X0, X0, X1 | X0 = X0 * X1;  
-RET            | return X0;  
-{% endhighlight %}
+```
+MOV X1, #5     \\\ X1 = 5;  
+MUL X0, X0, X1 \\ X0 = X0 * X1;  
+RET            \\ return X0;  
+```
 
 We also need to tell the assembler where the code starts:
 
-{% highlight C %}
+```
 .global asm_code  
 asm_code:  
     MOV X1, #5  
     MUL X0, X0, X1  
     RET  
-{% endhighlight%}
+```
 
 This is the minimal amount of information we need to give to the assembler to make it work.
 
 Lets go over the code in the screenshot:  
-{% highlight C %}  
-SUB X3, X1, X2   | X3 = X1 - X2;  
-SUB X4, X2, X1   | X4 = X2 - X1;  
-STP X3, X4, [X0] | X0[0] = X3; X0[1] = X4;  
-RET              | return X0;  
-{% endhighlight %}
+```
+SUB X3, X1, X2   \\ X3 = X1 - X2;  
+SUB X4, X2, X1   \\ X4 = X2 - X1;  
+STP X3, X4, [X0] \\ X0[0] = X3; X0[1] = X4;  
+RET              \\ return X0;  
+```
 
 STP stands for store pair, it stores the value of two registers to memory. X0 contains the pointer to an array.
 
