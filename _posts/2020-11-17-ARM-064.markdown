@@ -14,7 +14,7 @@ The simplest way I could think of was to write some of the levels in C and call 
 For the architecture I chose 64-bit arm (AArch64), it’s instruction set is called A64. This also means that I need to run the program’s in qemu because I don’t have an arm based laptop.
 
 So what does it look like?  
-![image could not be loaded](/assets/arm-064.png)  
+![image could not be loaded](/assets/arm-064.png){: style="padding:16px"}    
 On the right you can see the assembly code, after “asm_code:” the actual instructions start. On the left you can see the output of the c program, containing the TIS-100 challenge, the input, expected output and output of the assembly function. The first column in the OUT table is the expected output.
 
 
@@ -51,14 +51,15 @@ RET            \\ return X0;
 We also need to tell the assembler where the code starts:
 
 ```
-.global asm_code  
+    .global asm_code
+
 asm_code:  
     MOV X1, #5  
     MUL X0, X0, X1  
     RET  
 ```
 
-This is the minimal amount of information we need to give to the assembler to make it work.
+This is the minimal amount of information we need to give to the assembler.
 
 Lets go over the code in the screenshot:  
 ```
