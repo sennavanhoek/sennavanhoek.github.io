@@ -21,7 +21,7 @@ On the right you can see the assembly code, after “asm_code:” the actual ins
 Here is the same level in TIS-100:
 ![image could not be loaded](/assets/tis-100.png){: style="padding:16px"}   
 
-In TIS-100 you generally need more instructions than in A64. This has two big reasons, there are more instructions and registers available in A64. In TIS-100 you need many nodes and instructions two multiply two values, in A64 it's a singe instruction.
+In TIS-100 you generally need more instructions than in A64. This has two big reasons, there are more instructions and registers available in A64. In TIS-100 you need many nodes and instructions to multiply two values, in A64 it's a singe instruction.
 
 # A primer on A64 assembly:
 
