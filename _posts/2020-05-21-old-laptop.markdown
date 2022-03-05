@@ -8,7 +8,7 @@ Running a modern IDE on a Pentium III laptop using a smartphone.
 
 # Background
 I bought a nearly two decade old laptop, originally to have a cheap interface with a raspberry pi.  
-A brief summery of the specs:
+A brief summary of the specs:
 - Model: Dell latitude C600
 - Processor: single core Pentium III 750.0 MHz.  
 - Memory: 128.0 MB PC133.  
@@ -23,7 +23,7 @@ A brief summery of the specs:
 This was a bit more of a hassle than I expected.
 No matter what distro I tried it kept erroring out at some point.
 I suspected the cd-rom drive might be faulty, but but even with [Plop](https://www.plop.at/en/bootmanager/intro.html) the laptop would not boot from a USB stick. Network booting was the solution so a house mate left it overnight in a closet with a raspberry pi that served the image.  
-![image could not be loaded](/assets/c600_instl.jpg){: style="padding:16px"}  
+![image could not be loaded](/assets/c600_instl.webp){: style="padding:16px"}  
 In the morning I was greeted with Ubuntu!
 
 # Installing Linux on the smartphone
@@ -71,8 +71,8 @@ ssh -L 5901:localhost:5901 kali@192.168.42.129 -p8023
 xinit
 {% endhighlight %}
 And with that we can now use xfce4 on the laptop!  
-![image could not be loaded](/assets/c600_kali.jpg){: style="padding:16px"}  
+![image could not be loaded](/assets/c600_kali.webp){: style="padding:16px"}  
 I promised a modern IDE, fortunately java works great on arm so PyCharm and InteliJ work fine!
-![image could not be loaded](/assets/c600_pycharm.jpg){: style="padding:16px"}  
+![image could not be loaded](/assets/c600_pycharm.webp){: style="padding:16px"}  
 Even though it's functional and I could definitely have learned C or Python on it, I wouldn't recommend this project for anything serious.
-You could loose data when the USB disconnects and Samsung even broke USB tethering for a few months after I finished this project.
+You could lose data when the USB disconnects and Samsung even broke USB tethering for a few months after I finished this project.

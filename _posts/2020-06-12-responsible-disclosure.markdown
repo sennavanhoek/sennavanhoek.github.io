@@ -9,7 +9,7 @@ Bypassing number validation and completing my first responsible disclosure.
 
 # Background
 When entering the wrong number validation code in an app used to pay for laundry, I saw some weird behavior.
-As expected it gave an error about the code not matching but it also send same the code again and let me trough and enter the rest of the registration information.
+As expected it gave an error about the code not matching but it sent the same code again and let me enter the rest of the registration information.
 When submitting the information I got the error again but no new SMS.
 This prompted me to look into the internet traffic and I found some interesting things.
 
@@ -119,7 +119,7 @@ Connection: close
 }
 ```
 I could also successfully log into the app!  
-![image could not be loaded](/assets/appwash_screenshot.png){: style="padding:16px"}
+![image could not be loaded](/assets/appwash_screenshot.webp){: style="padding:16px"}
 
 # Expected Result  
 A server response like the one when you enter a wrong validation code, or another error.

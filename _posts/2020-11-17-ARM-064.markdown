@@ -14,12 +14,12 @@ The simplest way I could think of was to write some of the levels in C and call 
 For the architecture I chose 64-bit arm (AArch64), it’s instruction set is called A64. This also means that I need to run the program’s in qemu because I don’t have an arm based laptop.
 
 So what does it look like?  
-![image could not be loaded](/assets/arm-064.png){: style="padding:16px"}    
+![image could not be loaded](/assets/arm-064.webp){: style="padding:16px"}    
 On the right you can see the assembly code, after “asm_code:” the actual instructions start. On the left you can see the output of the c program, containing the TIS-100 challenge, the input, expected output and output of the assembly function. The first column in the OUT table is the expected output.
 
 
 Here is the same level in TIS-100:
-![image could not be loaded](/assets/tis-100.png){: style="padding:16px"}   
+![image could not be loaded](/assets/tis-100.webp){: style="padding:16px"}   
 
 In TIS-100 you generally need more instructions than in A64. This has two big reasons, there are more instructions and registers available in A64. In TIS-100 you need many nodes and instructions to multiply two values, in A64 it's a singe instruction.
 
@@ -79,7 +79,7 @@ Do I think TIS-100 would be a better game if it used real assembly?
 No, the small instruction set and node-based architecture make it quite the unique puzzle game. Something interesting for new and seasoned programmers alike.
 
 A benefit of using arm assembly, the levels will run just fine in termux on most modern android tablets and phones.  
-![image could not be loaded](/assets/arm-064-tab.jpeg){: style="padding:16px"}  
+![image could not be loaded](/assets/arm-064-tab.webp){: style="padding:16px"}  
 
 I have posted the levels and solutions to [github](https://github.com/sennavanhoek/ARM-064), along with the commands I used to run them.
 

@@ -6,5 +6,5 @@ layout: home
 ---
 
 
-It seemed fun to start a blog, so here it is!
-At the moment I haven't posted many projects, but if you have any questions feel free reach out.
+It seemed fun to start a blog, so here it is! I hope you will find something interesting.  
+If you have any questions or suggestions feel free reach out.
