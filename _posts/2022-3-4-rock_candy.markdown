@@ -5,44 +5,55 @@ categories: assembly ARMv6-M SWD
 permalink: "/rock-candy/"
 ---
 
-Reversing and patching STM32 firmware to add functionality to a third-party switch controller.
+Reversing and patching STM32 firmware to add functionality to a third-party Switch controller.
 
 
 # Background
-I like RPG games, but with most games I find that there is a bit to much button mashing involved. For example while trying to get trough random encounters.
+I like RPG games, but with most games I find that there is a bit too much button mashing involved. For example while trying to get through random encounters.
 
 ![image could not be loaded](/assets/pokemon.webp){: style="padding:16px"}  
 
-To solve this problem, I added a button mashing feature to a controller, a bit like the turbo buttons third-party SNES controllers used to have. And its also something I've used often wile playing Pokemon with emulators.
+To solve this problem, I added a button mashing feature to a controller, a bit like the turbo buttons third-party SNES controllers used to have. And it's also something I've used often wile playing Pokémon with emulators.
 
-I started this project with a Rock Candy wired switch controller after coming across a great [write-up](https://wrongbaud.github.io/posts/stm-xbox-jtag/) from Wrongbaud describing how interact with a different controller made by the same company using SWD. This is an ARM-specific protocol that (among other things) facilitates JTAG debugging.
+I started this project with a Rock Candy wired Switch controller after coming across a great [write-up](https://wrongbaud.github.io/posts/stm-xbox-jtag/) from Wrongbaud, describing how to interact with a different controller made by the same company using SWD. This is an ARM-specific protocol that (among other things) facilitates JTAG debugging.
 
 [comment]: # ![image could not be loaded](/assets/controller.webp){: style="padding:16px"}
 
 # Reversing
-During a Hackaday talk, Wrongbaud mentioned that his controller also supports USB-DFU. With the Rock Candy controller it is triggered by holding down the `+` and `-` buttons while plugging the controller into a computer. This is a nice place to start because it provides a way to flash and dump the firmware over USB. Later I tried doing the same or equivalent (start and select) on my other third-party controllers (Hori controllers for the PS4 and Switch), and they also boot into some form of USB update mode but that's for another project.
+During a Hackaday talk, Wrongbaud mentioned that his controller also supports USB-DFU. With the Rock Candy controller this is triggered by holding down the `+` and `-` buttons while plugging the controller into a computer. This is a nice place to start, since it provides a way to flash and dump the firmware over USB. Later, I tried doing the same or equivalent (start and select) on my other third-party controllers (Hori controllers for the PS4 and Switch), and they also boot into some form of USB update mode... but that's for another project.
 
-Using what I learned from the write-up, I could also attach a debugger to the controller which enabled me to do some fiddling with values in memory which is a great help in understanding the firmware.
-I will go into more details about reversing the firmware in exercises I'm planning to write about the controller. The firmware seems to follow the structure of projects build with STM32CubeIDE, so I could quite easily find the main loop. Then I looked for functions that accessed GPIO pins and set my sights on one that did 18 of them in a row, which was interesting as the controller has 18 digital buttons. By nopping out calls and looking at memory I could quickly confirm this was the function that read the buttons, and figure out how the button state is stored.
+Using what I learned from the write-up, I could also attach a debugger to the controller, which enabled me to do some fiddling with values in memory. This is a great help in understanding the firmware.
+The firmware seems to follow the structure of projects built with STM32CubeIDE, so I could quite easily find the main loop. Then I looked for functions that accessed GPIO pins and set my sights on one that did 18 of them in a row, which was interesting as the controller has 18 digital buttons. By nopping out calls and looking at memory, I could quickly confirm this was the function that read the buttons. Then I could figure out how the button state is stored.
 
 ![image could not be loaded](/assets/button_state.webp){: style="padding:16px"}
 
-All button states are collected in the r0 register by bit-shifting the button state and storing that value orred with the value of r0 in r0. Lets look at an example, the encoding of the `A` button being pressed in binary is `100` and that for `B` is `10` thus when both are pressed at the same time `110` will be stored in r0, after which the state collected in r0 will be written to memory.
+All button states are collected in the r0 register by bit-shifting the button state and storing that value orred with the value of r0 in r0. Let's look at an example: the encoding of the `A` button being pressed in binary is `100`, and that for `B` is `10`, so when both are pressed at the same time `110` will be stored in r0, whereafter the state collected in r0 will be written to memory.
 
 # Getting a foothold
-To add functionality you need to add code to empty space or somehow make space for it. To identify unused flash, I searched for regions that consists entirely of 0xff bytes, because all the flash bits are set to 1 to when it is erased.  
+To add functionality, you need to add code to the empty space or somehow make space for it. To identify unused flash, I searched for regions that consist entirely of 0xff bytes, because all the flash bits are set to 1 to when it is erased.  
 
 ![image could not be loaded](/assets/flash_map.webp){: style="padding:16px"}
 
-Luckily less than a quarter of the available flash is used by the stock firmware. Plenty of space to add new features!
-I started with writing a basic hook, to do this I overwrote an instruction with a branch to empty flash and to the empty flash I wrote the overwritten instruction and a branch back to to the original code.
+Luckily, less than a quarter of the available flash is used by the stock firmware. Plenty of space to add new features!
+I started with writing a basic hook. To do this I overwrote an instruction with a branch to empty flash and to the empty flash I wrote the overwritten instruction and a branch back to to the original code.
 
 ![image could not be loaded](/assets/hook.webp){: style="padding:16px"}
 
 # Patching the firmware
 Having a controller that constantly mashes the A button isn't very usable.
-I decided that I wanted to toggle the function by pressing down both analogue sticks at the same time, because its unlikely to happen on accident and doesn't mess too much with most games.
+I decided that I wanted to toggle the function by pressing down both analogue sticks at the same time, since this is unlikely to happen on accident, so it won't mess too much with most games.
 When the function is enabled, the `A` button is pressed on regular intervals without overwriting other button presses. To patch the firmware with some freedom to mess around I wrote a python script. I could not get macro's to work with keystone so I used python fstrings as marco's and that worked quite well.
+
+If you take a look at the code, you might have noticed there are some references to LED. The controller has one LED that normally indicates the power state, but it is connected to a GPIO pin, so it's controllable! To make it more obvious when the custom function is running, it now turns the LED on when pressing a button.
+
+
+# Result
+
+To come full circle, here is a video of the controller beating a pokemon trainer:
+<video src="/assets/pokemon.mp4" controls> Unable to load song. </video>  
+I sped up the footage because the battle itself isn't that interesting.
+
+# The Code
 
 ```python
 {% raw %}#!/usr/bin/python3
@@ -183,12 +194,3 @@ def main():
         patch_file.write(bytes(flash)[:0x10000]) # Only storing 64 kb to save time when flashing
 main()
 ```
-
-You might have noticed there are some references to LED in the code. The Controller has one LED that usually indicated the power state but it is connected to a GPIO pin. And to make it more obvious when the mashing function is enabled, it turns the LED on when pressing a button.
-
-
-# Result
-
-To come full circle, here is a video of the controller beating a pokemon trainer:
-<video src="/assets/pokemon.mp4" controls> Unable to load song. </video>
-I sped up the footage, because the battle itself isn't that interesting of course.
