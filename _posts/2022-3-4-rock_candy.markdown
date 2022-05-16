@@ -17,12 +17,11 @@ To solve this problem, I added a button mashing feature to a controller, a bit l
 
 I started this project with a Rock Candy wired Switch controller after coming across a great [write-up](https://wrongbaud.github.io/posts/stm-xbox-jtag/) from Wrongbaud, describing how to interact with a different controller made by the same company using SWD. This is an ARM-specific protocol that (among other things) facilitates JTAG debugging.
 
-[comment]: # ![image could not be loaded](/assets/controller.webp){: style="padding:16px"}
-
 # Reversing
 During a Hackaday talk, Wrongbaud mentioned that his controller also supports USB-DFU. With the Rock Candy controller this is triggered by holding down the `+` and `-` buttons while plugging the controller into a computer. This is a nice place to start, since it provides a way to flash and dump the firmware over USB. Later, I tried doing the same or equivalent (start and select) on my other third-party controllers (Hori controllers for the PS4 and Switch), and they also boot into some form of USB update mode... but that's for another project.
 
-Using what I learned from the write-up, I could also attach a debugger to the controller, which enabled me to do some fiddling with values in memory. This is a great help in understanding the firmware.
+Using what I learned from the write-up, I could also attach a debugger to the controller by soldering some wires to it. Which enabled me to do some fiddling with values in memory. This is a great help in understanding the firmware.
+![image could not be loaded](/assets/wires.webp){: style="padding:16px"}  
 The firmware seems to follow the structure of projects built with STM32CubeIDE, so I could quite easily find the main loop. Then I looked for functions that accessed GPIO pins and set my sights on one that did 18 of them in a row, which was interesting as the controller has 18 digital buttons. By nopping out calls and looking at memory, I could quickly confirm this was the function that read the buttons. Then I could figure out how the button state is stored.
 
 ![image could not be loaded](/assets/button_state.webp){: style="padding:16px"}
