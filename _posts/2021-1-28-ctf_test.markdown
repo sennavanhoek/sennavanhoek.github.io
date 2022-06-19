@@ -1,0 +1,15 @@
+---
+layout: post
+title:  "HTB UNI CTF: Mechanical madness"
+categories: Assembly Logism CTF
+permalink: "/mechanical_madness"
+---
+
+Reversing an interactive CPU schematic to write an assembler for it. I don't plan to cross-post often but I just really liked this challenge. *\*This will redirect to my CTF team's blog\**
+
+
+<div>
+<script>
+  window.location.href = "https://radboudinstituteof.pwning.nl/posts/htbunictfquals2021/mechanicalmadness/";
+</script>
+</div>
