@@ -49,7 +49,7 @@ If you take a look at the code, you might have noticed there are some references
 # Result
 
 To come full circle, here is a video of the controller beating a pokemon trainer:
-<video src="/assets/pokemon.mp4" controls> Unable to load video. </video>  
+<video src="/assets/pokemon.mp4" controls class="is-scaling"> Unable to load video. </video>  
 I sped up the footage because the battle itself isn't that interesting.
 
 # The Code

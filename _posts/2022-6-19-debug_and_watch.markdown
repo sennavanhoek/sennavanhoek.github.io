@@ -27,7 +27,7 @@ To do this we need to know at what address his location is stored and in what fo
 By first running the same game, 'Link's Awakening' in [mGBA](https://mgba.io/) we can take a look at the game’s RAM before touching the device.
 Link's Awakening is a GameBoy game and it has access to different types of RAM. My initial assumption was that the player position would be stored in high RAM since it is updated so often. By running around for a bit, we can see that a lot of values change but the values at address FF98 and FF99 change depending on the direction we run.
 
-<video src="/assets/link_walking.mp4" loop autoplay muted width=600> Unable to load video. </video>
+<video src="/assets/link_walking.mp4" loop autoplay muted controls class="is-scaling"> Unable to load video. </video>
 
 # Memory map
 
@@ -129,4 +129,5 @@ Now we have everything we need to manipulate Link's position on the Game&Watch.
 While the door is blocked, we can escape the house by teleporting to the edge of the screen!  
 (This abuses a mechanic that switches maps when you walk out of bounds)
 
-<video src="/assets/zelda_demo.mp4" controls width=600> Unable to load video. </video>
+
+<video src="/assets/zelda_demo.mp4" controls class="is-scaling"> Unable to load video. </video>
