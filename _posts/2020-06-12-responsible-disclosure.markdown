@@ -3,7 +3,6 @@ layout: post
 title:  "Write-up Miele appWash"
 categories: security android
 permalink: "/appwash-writeup/"
-show_excerpts: True
 ---
 Bypassing number validation and completing my first responsible disclosure.
 
@@ -118,7 +117,7 @@ Connection: close
          }
 }
 ```
-I could also successfully log into the app!  
+I could also successfully log into the app! (This is a number I only use for testing)
 ![image could not be loaded](/assets/appwash_screenshot.webp){: style="padding:16px"}
 
 # Expected Result  

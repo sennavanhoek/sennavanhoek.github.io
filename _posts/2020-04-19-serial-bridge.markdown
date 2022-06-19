@@ -5,7 +5,7 @@ categories: password bad-usb
 permalink: "/serial-bridge/"
 show_excerpts: True
 ---
-This device provides a straightforward and cheap way to inject keystrokes using your phone.
+Providing a straightforward and cheap way to inject keystrokes using your phone.
 
 # Background
 With a custom kernel it is possible to use USB-gadget mode on android phones.
