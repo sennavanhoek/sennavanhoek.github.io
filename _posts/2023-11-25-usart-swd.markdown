@@ -1,12 +1,12 @@
 ---
 layout: post
-title:  "2 ways to get serial output from a STM32F4 Discovery board without a UART dongle.
+title:  "Getting serial output from a STM32F4 Discovery board.
 "
 categories: SWD UART 
 permalink: "/usart-swd/"
 ---
 
-In contrast to more modern boards, there is no internal serial connection between the target chip and the on-board debugger. A common solution is to use a USB serial interface converter, but what if you don’t want the additional clutter or your cheap jumper cables keep disconnecting?
+In contrast to more modern boards, there is no internal serial connection between the target chip and the on-board debugger. A common solution is to use a USB serial interface converter, but is that the only way?
 
 # Hardware solution
 The [user manual](https://www.st.com/resource/en/user_manual/um1472-discovery-kit-with-stm32f407vg-mcu-stmicroelectronics.pdf ) recognises this issue and helpfully provides a diagram of the points you need to connect to use the built-in virtual com port. 
@@ -19,8 +19,7 @@ After disassembling something from my electronics bin, I salvaged a bit of magne
 
 Testing using a simple hello world program went without witout a hitch.
 
-
-#### Minicom output on reset:
+**Minicom output on reset:**
 ```
 �
 Hello from the Discovery!
@@ -61,7 +60,7 @@ print(string)
 ```
 
 
-#### Python script output on reset:
+**Python script output on reset:**
 ```
 Hello from the Discovery!
 ```
