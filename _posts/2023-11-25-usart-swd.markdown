@@ -1,0 +1,72 @@
+---
+layout: post
+title:  "2 ways to get serial output from a STM32F4 Discovery board without a UART dongle.
+"
+categories: SWD UART 
+permalink: "/usart-swd/"
+---
+
+In contrast to more modern boards, there is no internal serial connection between the target chip and the on-board debugger. A common solution is to use a USB serial interface converter, but what if you don’t want the additional clutter or your cheap jumper cables keep disconnecting?
+
+# Hardware solution
+The [user manual](https://www.st.com/resource/en/user_manual/um1472-discovery-kit-with-stm32f407vg-mcu-stmicroelectronics.pdf ) recognises this issue and helpfully provides a diagram of the points you need to connect to use the built-in virtual com port. 
+
+![image could not be loaded](/assets/usart1.png){: style="padding:16px"}
+
+After disassembling something from my electronics bin, I salvaged a bit of magnet wire and connected the points. 
+
+![image could not be loaded](/assets/usart2.png){: style="padding:16px"}
+
+Testing using a simple hello world program went without witout a hitch.
+
+
+#### Minicom output on reset:
+```
+�
+Hello from the Discovery!
+```
+Note that the `�` junk output also occurs on reset when using an external converter.
+
+This solution makes the board act like newer STM dev boards, thus it might be the best solution when working with multiple different boards. It does however require that you are comfortable with soldering and own the board. 
+
+The same type of board is used in one of my favorite classes, soldering wasn’t an option but I wanted to help some classmates that used laptops with just a single usable USB port.
+
+
+
+# Software solution
+
+We don’t actually need the serial output, we just want to see what the firmware is trying to communicate. And while the serial lines are not connected SWD is, and with that we have a high level of control over the target chip. 
+
+Using SWD debugging (trough the pyocd library) we can write a script to break on `send_USART_str` or any other function you are using.
+
+```python
+...
+addr = provider.get_symbol_value("send_USART_str")
+target.set_breakpoint(addr, Target.BreakpointType.HW)
+continue_until_halt(target)
+target.remove_breakpoint(addr)
+```
+
+And read out the string that is passed to it.
+```python
+char_pointer = target.read_core_register('r0')
+char = target.read8(char_pointer)
+string = ""
+while char != 0:
+    string += chr(char)
+    char_pointer += 1
+    char = target.read8(char_pointer)
+print(string)
+
+```
+
+
+#### Python script output on reset:
+```
+Hello from the Discovery!
+```
+
+A full example script can be found [here](https://github.com/sennavanhoek/pyocd_scripts/blob/main/usart_over_swd.py)
+
+
+It seems to be completely stable and doesn't suffer from the floating line output after reset.
